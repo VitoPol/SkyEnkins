@@ -8,15 +8,14 @@ from skyenkins import settings
 
 class File(models.Model):
     owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    file = models.FileField(upload_to='', validators=[FileExtensionValidator(allowed_extensions=['py'])])
+    file = models.FileField(upload_to='static/', validators=[FileExtensionValidator(allowed_extensions=['py'])])
     mark = models.CharField(max_length=8, choices=[("new", "новый"), ("changed", "изменено"), ("verified", "проверено")])
     created = models.DateTimeField(auto_now_add=True)
     changed = models.DateTimeField(auto_now=True, null=True)
-    logs = models.FileField(upload_to="logs/", null=True)
 
     class Meta:
-        verbose_name = 'File'
-        verbose_name_plural = 'Files'
+        verbose_name = 'Файл'
+        verbose_name_plural = 'Файлы'
 
 
 class User(AbstractUser):

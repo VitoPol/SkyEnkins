@@ -8,7 +8,8 @@
 {% bootstrap_messages %}
 
 {# Display a form #}
-<form method="post" class="form" enctype="multipart/form-data">
+<div style="max-width: 20rem; padding: 10px">
+    <form method="post" class="form" enctype="multipart/form-data">
     {% csrf_token %}
     {% bootstrap_form form %}
     {% buttons %}
@@ -16,7 +17,7 @@
             Submit
         </button>
         <a href="/">
-            <button type="button" class="btn btn-primary">
+            <button type="button" class="btn btn-secondary">
                 Back
             </button>
         </a>

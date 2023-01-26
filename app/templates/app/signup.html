@@ -8,17 +8,19 @@
 {% bootstrap_messages %}
 
 {# Display a form #}
-<form method="post" class="form">
-    {% csrf_token %}
-    {% bootstrap_form form %}
-    {% buttons %}
-        <button type="submit" class="btn btn-primary">
-            Submit
-        </button>
-        <a href="/">
-            <button type="button" class="btn btn-primary">
-                Back
+<div style="max-width: 20rem; padding: 10px">
+    <form method="post" class="form">
+        {% csrf_token %}
+        {% bootstrap_form form %}
+        {% buttons %}
+            <button type="submit" class="btn btn-primary">
+                Submit
             </button>
-        </a>
-    {% endbuttons %}
-</form>
+            <a href="/">
+                <button type="button" class="btn btn-secondary">
+                    Back
+                </button>
+            </a>
+        {% endbuttons %}
+    </form>
+</div>

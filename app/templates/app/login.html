@@ -1,20 +1,32 @@
-{#{% block title %}Login{% endblock %}#}
-{##}
-{#{% block content %}#}
-{#  <h2>Login</h2>#}
-{##}
-{#    <form method="post">#}
-{#      {% csrf_token %}#}
-{#      <table>#}
-{#        {{ form.as_p }}#}
-{#        <tr>#}
-{#          <td>&nbsp;</td>#}
-{#          <td><input type="submit" value="Submit"></td>#}
-{#        </tr>#}
-{#      </table>#}
-{#    </form>#}
-{#{% endblock %}#}
+{% extends "app/base.html" %}
+{% block body %}
+    {% load bootstrap4 %}
 
+    {# Load CSS and JavaScript #}
+    {% bootstrap_css %}
+    {% bootstrap_javascript jquery='full' %}
+
+    {# Display django.contrib.messages as Bootstrap alerts #}
+    {% bootstrap_messages %}
+
+    {# Display a form #}
+    <div style="max-width: 20rem; padding: 10px">
+        <form method="post" class="form">
+            {% csrf_token %}
+            {% bootstrap_form form %}
+            {% buttons %}
+                <button type="submit" class="btn btn-primary">
+                    Submit
+                </button>
+                <a href="/">
+                    <button type="button" class="btn btn-secondary">
+                        Back
+                    </button>
+                </a>
+            {% endbuttons %}
+        </form>
+    </div>
+{% endblock %}
 {% load bootstrap4 %}
 
 {# Load CSS and JavaScript #}
@@ -25,17 +37,20 @@
 {% bootstrap_messages %}
 
 {# Display a form #}
-<form method="post" class="form">
-    {% csrf_token %}
-    {% bootstrap_form form %}
-    {% buttons %}
-        <button type="submit" class="btn btn-primary">
-            Submit
-        </button>
-        <a href="/">
-            <button type="button" class="btn btn-primary">
-                Back
+<div style="max-width: 20rem; padding: 10px">
+    <form method="post" class="form">
+        {% csrf_token %}
+        {% bootstrap_form form %}
+        {% buttons %}
+            <button type="submit" class="btn btn-primary">
+                Submit
             </button>
-        </a>
-    {% endbuttons %}
-</form>
+            <a href="/">
+                <button type="button" class="btn btn-secondary">
+                    Back
+                </button>
+            </a>
+        {% endbuttons %}
+    </form>
+</div>
+
