@@ -4,28 +4,33 @@ from time import sleep
 from celery import shared_task
 
 from django.core.files import File as dj_file
+from django.core.mail import send_mail
 
-from app.models import File
+from app.models import File, User
+from skyenkins import settings
 
-
-#
-# @shared_task
-# def test(x, y):
-#     sleep(3)
-#     return x + y
 
 @shared_task(name="checking_files")
 def checking_files():
-    # for filename in filenames:
-    #     os.system(f'flake8 "{os.path.relpath("files/some_file.py")}" > logs/{filename}.txt')
+    users_id = set()
     files = File.objects.filter(mark__in=["changed", "new"])
+
     for file in files:
-        logname = f'{file.file.name.replace(".py", "").replace("static/", "static/logs/")}.txt'
-        com = f'flake8 "{file.file.path}"' \
-              f' > {logname}'
+        users_id.add(file.owner_id)
+        logname = f'{file.file.name.replace(".py", ".txt")}'
+        com = f'flake8 "{file.file.path}" >> static/logs/{logname}'
         print(com)
         os.system(com)
         file.mark = "verified"
-        with open(f"{logname}") as f:
-            file.logs = dj_file(f, f"{logname.split('/')[-1]}")
+        with open(f"static/logs/{logname}", "a+") as f:
+            f.write("\nFile is verified. Email is sent.\n\n")
+            file.logs = dj_file(f, f"{logname}")
             file.save()
+
+    users = User.objects.filter(id__in=users_id)
+    emails = []
+    for user in users:
+        emails.append(user.email)
+
+    send_mail("Notification of inspection", "Your files are verified. Check it at SkyEnkins.", settings.EMAIL_HOST_USER,
+              emails)

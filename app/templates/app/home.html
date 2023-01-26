@@ -15,6 +15,9 @@
                 status
             </div>
             <div class="col">
+                logs
+            </div>
+            <div class="col">
                 created at
             </div>
             <div class="col">
@@ -30,10 +33,13 @@
                     {{ file.id }}
                 </div>
                 <div class="col">
-                    {{ file.file.name }}
+                    <a href="{{ file.file.url }}" target="_blank">{{ file.file.name }}</a>
                 </div>
                 <div class="col" style="max-width: 100px">
                     {{ file.mark }}
+                </div>
+                <div class="col">
+                    <a href="{{ file.logs.url }}" target="_blank">{{ file.logs.name }}</a>
                 </div>
                 <div class="col">
                     {{ file.created }}

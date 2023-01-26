@@ -12,7 +12,7 @@ class File(models.Model):
     mark = models.CharField(max_length=8, choices=[("new", "новый"), ("changed", "изменено"), ("verified", "проверено")])
     created = models.DateTimeField(auto_now_add=True)
     changed = models.DateTimeField(auto_now=True, null=True)
-    logs = models.FileField(upload_to="logs/", null=True)
+    logs = models.FileField(upload_to="", null=True)
 
     class Meta:
         verbose_name = 'File'

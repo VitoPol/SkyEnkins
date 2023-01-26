@@ -10,17 +10,18 @@
 {# Display a form #}
 <div style="max-width: 20rem; padding: 10px">
     <form method="post" class="form" enctype="multipart/form-data">
-    {% csrf_token %}
-    {% bootstrap_form form %}
-    {% buttons %}
-        <button type="submit" class="btn btn-primary">
-            Submit
-        </button>
-        <a href="/">
-            <button type="button" class="btn btn-secondary">
-                Back
+        {% csrf_token %}
+        {% bootstrap_form form %}
+        {% buttons %}
+            <button type="submit" class="btn btn-primary">
+                Submit
             </button>
-        </a>
+            <a href="/">
+                <button type="button" class="btn btn-secondary">
+                    Back
+                </button>
+            </a>
 
-    {% endbuttons %}
-</form>
+        {% endbuttons %}
+    </form>
+</div>

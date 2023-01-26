@@ -12,6 +12,10 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 import os
 from pathlib import Path
 
+from dotenv import load_dotenv
+
+load_dotenv()
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -155,3 +159,11 @@ CELERY_ACCEPT_CONTENT = ["json"]
 CELERY_TASK_SERIALIZER = 'json'
 
 CELERY_BEAT_SCHEDULER='django_celery_beat.schedulers:DatabaseScheduler'
+
+EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+EMAIL_USE_SSL = True  # for yandex mail
+EMAIL_HOST = os.environ.get("EMAIL_HOST")
+EMAIL_HOST_USER = os.environ.get("EMAIL_HOST_USER")
+EMAIL_HOST_PASSWORD = os.environ.get("EMAIL_HOST_PASSWORD")
+EMAIL_PORT = os.environ.get("EMAIL_PORT")
+DEFAULT_FROM_EMAIL = os.environ.get("EMAIL_HOST_USER")

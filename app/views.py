@@ -78,7 +78,7 @@ class FileListView(LoginRequiredMixin, ListView):
     context_object_name = "files"
 
     def get(self, request, *args, **kwargs):
-        # tasks.checking_files()
+        tasks.checking_files()
         self.queryset = File.objects.filter(owner_id=request.user.id)
         return super().get(request, *args, **kwargs)
 
