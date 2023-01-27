@@ -39,7 +39,9 @@
                     {{ file.mark }}
                 </div>
                 <div class="col">
-                    <a href="{{ file.logs.url }}" target="_blank">{{ file.logs.name }}</a>
+                    {% if file.logs %}
+                        <a href="{{ file.logs.url }}" target="_blank">{{ file.logs.name }}</a>
+                    {% endif %}
                 </div>
                 <div class="col">
                     {{ file.created }}

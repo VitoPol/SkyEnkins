@@ -78,7 +78,6 @@ class FileListView(LoginRequiredMixin, ListView):
     context_object_name = "files"
 
     def get(self, request, *args, **kwargs):
-        tasks.checking_files()
         self.queryset = File.objects.filter(owner_id=request.user.id)
         return super().get(request, *args, **kwargs)
 
@@ -98,9 +97,8 @@ class FileUpdateView(LoginRequiredMixin, UpdateView):
     success_url = "/home/"
     fields = ["file"]
 
-    # def post(self, request, *args, **kwargs):
-    #     form = UploadFileForm(request.POST, request.FILES)
-    #     if form.is_valid():
-    #         instance = File(file=request.FILES['file'], owner_id=request.user.id, mark='changed')
-    #         instance.save()
-    #     return super().post(request)
+    def post(self, request, pk, *args, **kwargs):
+        file = File.objects.get(id=pk)
+        file.mark = "changed"
+        file.save()
+        return super(FileUpdateView, self).post(self, request, pk, *args, **kwargs)

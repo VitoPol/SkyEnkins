@@ -14,17 +14,23 @@ from skyenkins import settings
 def checking_files():
     users_id = set()
     files = File.objects.filter(mark__in=["changed", "new"])
+    os.system("DEL static/logs/*.txt")
 
     for file in files:
         users_id.add(file.owner_id)
-        logname = f'{file.file.name.replace(".py", ".txt")}'
-        com = f'flake8 "{file.file.path}" >> static/logs/{logname}'
+        logname = f'{file.file.name.replace(".py", ".txt")}' if not file.logs else file.logs.path
+        com = f'flake8 "{file.file.path}" >> {f"static/logs/" if not file.logs else ""}{logname}'
         print(com)
         os.system(com)
         file.mark = "verified"
-        with open(f"static/logs/{logname}", "a+") as f:
-            f.write("\nFile is verified. Email is sent.\n\n")
-            file.logs = dj_file(f, f"{logname}")
+        if not file.logs:
+            with open(f"static/logs/{logname}", "a+") as f:
+                f.write("\nFile is verified. Email is sent.\n\n")
+                file.logs = dj_file(f, f"{logname}")
+                file.save()
+        else:
+            with open(file.logs.path, "a") as f:
+                f.write("\nFile is verified. Email is sent.\n\n")
             file.save()
 
     users = User.objects.filter(id__in=users_id)
