@@ -19,7 +19,7 @@ app.autodiscover_tasks()
 app.conf.beat_schedule = {
     'verification': {
         'task': 'checking_files',
-        'schedule': 60.0,
+        'schedule': 3600.0,
     },
 }
 app.conf.timezone = 'UTC'
