@@ -1,0 +1,68 @@
+version: "3.9"
+services:
+
+  migrations:
+    build:
+      context: .
+    command: bash -c "python manage.py migrate"
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  django-server:
+    build:
+      context: .
+    command: bash -c "python manage.py runserver 0.0.0.0:8000"
+    ports:
+    - "8000:8000"
+    volumes:
+      - "./static:/django/static"
+      - "./media:/django/media"
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  postgres:
+    image: postgres:latest
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 12321
+      POSTGRES_DB: skyenkins
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  redis:
+    image: redis
+
+  celery:
+    build: .
+    command: celery -A skyenkins  worker -l info --without-gossip --without-mingle --without-heartbeat -Ofair --pool=solo
+    depends_on:
+      - redis
+    environment:
+      - DEBUG=1
+      - SECRET_KEY=django-insecure-6h)%r_wkfz=^4cwqb=$s+m!2m_08d8l%m^9mx$78cur1x_n4i9
+      - DJANGO_ALLOWED_HOSTS=localhost 127.0.0.1 [::1]
+    volumes:
+      - "./static:/django/static"
+      - "./media:/django/media"
+
+  celery-beat:
+    build: .
+    command: celery -A skyenkins beat -l info
+    environment:
+      - DEBUG=1
+      - SECRET_KEY=django-insecure-6h)%r_wkfz=^4cwqb=$s+m!2m_08d8l%m^9mx$78cur1x_n4i9
+      - DJANGO_ALLOWED_HOSTS=localhost 127.0.0.1 [::1]
+      - POSTGRES_DB=skyenkins
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=12321
+    volumes:
+      - "./static:/django/static"
+      - "./media:/django/media"
+    depends_on:
+      migrations:
+        condition: service_completed_successfully

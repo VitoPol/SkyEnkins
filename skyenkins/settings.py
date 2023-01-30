@@ -29,7 +29,7 @@ SECRET_KEY = 'django-insecure-6h)%r_wkfz=^4cwqb=$s+m!2m_08d8l%m^9mx$78cur1x_n4i9
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["localhost", "127.0.0.1", "0.0.0.0"]
 
 
 # Application definition
@@ -90,7 +90,7 @@ DATABASES = {
         'NAME': 'skyenkins',
         'USER': 'postgres',
         'PASSWORD': '12321',
-        'HOST': 'localhost',
+        'HOST': 'postgres',
         'PORT': '5432',
     }
 }
@@ -154,12 +154,13 @@ LOGOUT_REDIRECT_URL = "/"
 
 LOGIN_REDIRECT_URL = "/"
 
-CELERY_BROKER_URL = "redis://localhost:6379"
-CELERY_RESULT_BACKEND = "redis://localhost:6379"
+CELERY_IMPORTS = ("app.tasks", )
+CELERY_BROKER_URL = "redis://redis:6379"
+CELERY_RESULT_BACKEND = "redis://redis:6379"
 CELERY_ACCEPT_CONTENT = ["json"]
 CELERY_TASK_SERIALIZER = 'json'
 
-CELERY_BEAT_SCHEDULER='django_celery_beat.schedulers:DatabaseScheduler'
+CELERY_BEAT_SCHEDULER = 'django_celery_beat.schedulers:DatabaseScheduler'
 
 EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
 EMAIL_USE_SSL = True  # for yandex mail
